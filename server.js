@@ -1,7 +1,9 @@
+import "express-async-errors";
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import morgan from "morgan";
+import mongoose from "mongoose";
 
 // routers
 import jobRouter from "./routes/jobRouter.js";
@@ -19,7 +21,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  console.log(req);
   res.json({ message: "Data Received", data: req.body });
 });
 
@@ -36,6 +37,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong" });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+try {
+  await mongoose.connect(process.env.MONGO_URL);
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+} catch (error) {
+  console.log(error);
+  process.exit(1);
+}
