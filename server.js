@@ -8,6 +8,9 @@ import mongoose from "mongoose";
 // routers
 import jobRouter from "./routes/jobRouter.js";
 
+// middlewares
+import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
+
 const app = express();
 const port = process.env.PORT || 5100;
 
@@ -32,10 +35,7 @@ app.use("*", (req, res) => {
   });
 });
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).json({ message: "Something went wrong" });
-});
+app.use(errorHandlerMiddleware);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
