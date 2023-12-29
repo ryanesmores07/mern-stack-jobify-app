@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 // routers
 import jobRouter from "./routes/jobRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 // middlewares
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
@@ -28,6 +29,7 @@ app.post("/", (req, res) => {
 });
 
 app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/auth", authRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({

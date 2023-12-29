@@ -6,14 +6,17 @@ import {
   updateJob,
   deleteJob,
 } from "../controllers/jobController.js";
-import { validationJobInput } from "../middleware/validationMiddleware.js";
+import {
+  validationJobInput,
+  validateIdParam,
+} from "../middleware/validationMiddleware.js";
 const router = Router();
 
 router.route("/").get(getAllJobs).post(validationJobInput, createJob);
 router
   .route("/:id")
-  .get(getJob)
-  .patch(validationJobInput, updateJob)
-  .delete(deleteJob);
+  .get(validateIdParam, getJob)
+  .patch(validationJobInput, validateIdParam, updateJob)
+  .delete(validateIdParam, deleteJob);
 
 export default router;
