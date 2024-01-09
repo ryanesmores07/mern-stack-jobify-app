@@ -32,9 +32,16 @@ export const login = async (req, res) => {
   // const isValidUser = user && comparePassword(req.body.password, user.password)
   // if (!isValidUser) throw new UnauthenticatedError("invalid credentials")
 
-  const token = createJWT()
+  const token = createJWT({ userId: user._id, role: user.role });
 
-  res.send("login");
+  const oneDay = 1000 * 60 * 60 * 24;
 
+  res.cookie("token", token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay),
+    secure: process.env.NOVE_ENV === "production",
+  });
+
+  res.status(StatusCodes.OK).json({ msg: "user logged in" });
   // Check if password is correct
 };
