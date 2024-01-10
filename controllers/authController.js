@@ -22,10 +22,9 @@ export const login = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) throw new UnauthenticatedError("invalid credentials");
-  const isPasswordCorrect = await comparePassword(
-    req.body.password,
-    user.password
-  );
+
+  const isPasswordCorrect = await comparePassword(password, user.password);
+
   if (!isPasswordCorrect) throw new UnauthenticatedError("invalid credentials");
 
   // One line version of the above
@@ -39,7 +38,7 @@ export const login = async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: process.env.NOVE_ENV === "production",
+    secure: process.env.NODE_ENV === "production",
   });
 
   res.status(StatusCodes.OK).json({ msg: "user logged in" });
