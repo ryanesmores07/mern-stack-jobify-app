@@ -4,11 +4,16 @@ import {
   getApplicationStats,
   updateUser,
 } from "../controllers/userController.js";
+import { validateUpdateLoginInput } from "../middleware/validationMiddleware.js";
+import { authorizePermissions } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
 router.get("/current-user", getCurrentUser);
-router.get("/admin/app-stats", getApplicationStats);
-router.patch("/update-user", updateUser);
+router.get("/admin/app-stats", [
+  authorizePermissions("admin"),
+  getApplicationStats,
+]);
+router.patch("/update-user", validateUpdateLoginInput, updateUser);
 
 export default router;
