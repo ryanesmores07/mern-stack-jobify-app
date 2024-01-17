@@ -1,3 +1,5 @@
+import customFetch from "../utils/customFetch";
+
 const AllJobs = () => {
   return <h1>AllJobs</h1>;
 };
