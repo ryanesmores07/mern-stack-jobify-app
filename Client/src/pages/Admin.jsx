@@ -20,7 +20,7 @@ const Admin = () => {
   return (
     <Wrapper>
       <StatItem
-        title="current title"
+        title="current users"
         count={users}
         color="#e9b949"
         bcg="#fcefc7"
